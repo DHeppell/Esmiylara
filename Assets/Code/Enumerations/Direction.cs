@@ -41,6 +41,11 @@ namespace Esmiylara.Enumerations
         /// Defines the value for right.
         /// </summary>
         Right = East,
+
+        /// <summary>
+        /// Defines the value for no direction.
+        /// </summary>
+        None = byte.MaxValue,
     }
 
     /// <summary>
@@ -86,6 +91,25 @@ namespace Esmiylara.Enumerations
 
             // If we hit this, something is wrong.
             throw new NotImplementedException("Error converting vector to direction axis, the direction specified is not handled.");
+        }
+
+        /// <summary>
+        /// Gets a direction value from a vector.
+        /// </summary>
+        /// <param name="vector">The vector to evaluate.</param>
+        /// <returns>The direction that the vector equals.</returns>
+        public static Direction GetDirectionFromVector(Vector2 vector)
+        {
+            // Check the X axis first.
+            if (vector.x > 0) { return Direction.Right; }
+            if (vector.x > 0) { return Direction.Left; }
+
+            // Check the Y axis next.
+            if (vector.y < 0) { return Direction.Down; }
+            if (vector.y > 0) { return Direction.Up; }
+
+            // No direction was found.
+            return Direction.None;
         }
     }
 }

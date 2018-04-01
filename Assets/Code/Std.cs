@@ -2,6 +2,7 @@
 using Esmiylara.Extensions;
 using Esmiylara.Utilities;
 using System;
+using UnityEngine;
 
 namespace Esmiylara
 {
@@ -39,7 +40,7 @@ namespace Esmiylara
             // Define default console write hook.
             OutHook += (a, b) =>
             {
-                Console.WriteLine(string.Format("[{0}][{1}] {2}",
+                Debug.Log(string.Format("[{0}][{1}] {2}",
                     TimeUtilities.HighResolution.Now.ToString(DefaultTimestampFormat),
                     b.Verbosity.GetDescription(), b.Message));
             };
