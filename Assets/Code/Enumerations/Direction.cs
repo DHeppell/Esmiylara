@@ -102,7 +102,7 @@ namespace Esmiylara.Enumerations
         {
             // Check the X axis first.
             if (vector.x > 0) { return Direction.Right; }
-            if (vector.x > 0) { return Direction.Left; }
+            if (vector.x < 0) { return Direction.Left; }
 
             // Check the Y axis next.
             if (vector.y < 0) { return Direction.Down; }
