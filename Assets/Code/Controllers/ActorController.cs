@@ -31,7 +31,7 @@ namespace Esmiylara.Controllers
         /// <summary>
         /// Initializes local properties.
         /// </summary>
-        void Awake()
+        protected virtual void Awake()
         {
             // Initialize components.
             animator = GetComponent<Animator>();
@@ -39,7 +39,7 @@ namespace Esmiylara.Controllers
         }
 
         // Use this for initialization
-        void Start()
+        protected virtual void Start()
         {
             rigidbody.gravityScale = 0f;
             rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
@@ -48,7 +48,7 @@ namespace Esmiylara.Controllers
         }
 
         // Update is called once per frame
-        void Update()
+        protected virtual void Update()
         {
             // Check to see if momentum is set, if not then poll input.
             if (Momentum == Vector2.zero)

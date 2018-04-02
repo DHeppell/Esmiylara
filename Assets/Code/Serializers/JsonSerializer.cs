@@ -74,7 +74,7 @@ namespace Esmiylara.Serializers
             if (File.Exists(Application.dataPath + filename))
             {
                 // Open the file.
-                using (var fs = new StreamReader(Application.dataPath + filename))
+                using (var fs = new StreamReader(Application.dataPath + Path.DirectorySeparatorChar + filename))
                 {
                     // Return the deserialized object.
                     return Deserialize(fs.ReadToEnd());
@@ -93,7 +93,7 @@ namespace Esmiylara.Serializers
         public static void SerializeFile(Type obj, string filename)
         {
             // Open the file.
-            using (var fs = new StreamWriter(Application.dataPath + filename, false))
+            using (var fs = new StreamWriter(Application.dataPath + Path.DirectorySeparatorChar + filename, false))
             {
                 fs.Write(Serialize(obj));
                 fs.Close();
