@@ -100,13 +100,31 @@ namespace Esmiylara.Enumerations
         /// <returns>The direction that the vector equals.</returns>
         public static Direction GetDirectionFromVector(Vector2 vector)
         {
-            // Check the X axis first.
-            if (vector.x > 0) { return Direction.Right; }
-            if (vector.x < 0) { return Direction.Left; }
+            // Convert values to absolute values first.
+            var vectorX = Math.Abs(vector.x);
+            var vectorY = Math.Abs(vector.y);
 
-            // Check the Y axis next.
-            if (vector.y < 0) { return Direction.Down; }
-            if (vector.y > 0) { return Direction.Up; }
+            // Check to see which is bigger.
+            if(vectorX > vectorY)
+            {
+                // Check the X axis first.
+                if (vector.x > 0) { return Direction.Right; }
+                if (vector.x < 0) { return Direction.Left; }
+
+                // Check the Y axis next.
+                if (vector.y < 0) { return Direction.Down; }
+                if (vector.y > 0) { return Direction.Up; }
+            }
+            else
+            {
+                // Check the Y axis first.
+                if (vector.y < 0) { return Direction.Down; }
+                if (vector.y > 0) { return Direction.Up; }
+
+                // Check the X axis next.
+                if (vector.x > 0) { return Direction.Right; }
+                if (vector.x < 0) { return Direction.Left; }
+            }           
 
             // No direction was found.
             return Direction.None;
