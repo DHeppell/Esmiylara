@@ -1,4 +1,5 @@
 ﻿using Esmiylara.Enumerations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +19,10 @@ namespace Esmiylara.Controllers
         /// The movement speed for actors. (This will be a function later.)
         /// </summary>
         public const float MovementSpeed = 2f;
+        /// <summary>
+        /// Defines the actor sprite. (This will be a function later.)
+        /// </summary>
+        public virtual string Sprite { get { return string.Empty; } }
 
         /// <summary>
         /// Defines the animator for the actor.
@@ -90,6 +95,23 @@ namespace Esmiylara.Controllers
             animator.SetFloat("MovementX", Momentum.x);
             animator.SetFloat("MovementY", Momentum.y);
             animator.SetBool("Moving", (Momentum != Vector2.zero));
+        }
+
+        /// <summary>
+        /// Updates the actor after the update() function.
+        /// </summary>
+        protected virtual void LateUpdate()
+        {
+            var subSprites = Resources.LoadAll<Sprite>("Graphics/Actors/" + Sprite);
+
+            foreach(var renderer in GetComponentsInChildren<SpriteRenderer>())
+            {
+                string spriteName = renderer.sprite.name;
+                var newSprite = Array.Find(subSprites, item => item.name == spriteName);
+
+                if (newSprite)
+                    renderer.sprite = newSprite;
+            }
         }
 
         /// <summary>
