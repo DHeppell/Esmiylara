@@ -22,11 +22,11 @@ namespace Esmiylara.Controllers
             if (Target != null)
             {
                 transform.position = new Vector3(
-                    Target.transform.position.x, Target.transform.position.y, -10);
+                    Target.transform.position.x, Target.transform.position.y, transform.position.z);
             }
             else
             {
-                transform.position = new Vector3(0, 0, -10);
+                transform.position = new Vector3(0, 0, transform.position.z);
             }
         }
     }
