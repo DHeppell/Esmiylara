@@ -27,13 +27,29 @@ namespace Esmiylara.Controllers.Interface
         /// </summary>
         [SerializeField]
         protected bool MouseMiddle;
+        /// <summary>
+        /// Tells unity if the object is enabled.
+        /// </summary>
+        public bool Enabled = true;
+        /// <summary>
+        /// Caches the original alpha value.
+        /// </summary>
+        private float originalAlpha;
 
         /// <summary>
         /// Called when the controller is initialized.
         /// </summary>
         void Start()
         {
-            // Nothing to do right now.
+            // Get the renderer.
+            var renderer = GetComponent<CanvasRenderer>();
+
+            // Check to see if we got it.
+            if (renderer != null)
+            {
+                // Set the original alpha value.
+                originalAlpha = renderer.GetAlpha();
+            }
         }
 
         /// <summary>
@@ -43,6 +59,19 @@ namespace Esmiylara.Controllers.Interface
         {
             // Check for mouse input.
             DetectMouseButtons();
+        }
+
+        /// <summary>
+        /// Changes the component's alpha value.
+        /// </summary>
+        /// <param name="value">The new alpha value.</param>
+        public virtual void SetAlpha(float value)
+        {
+            // Store the new value.
+            originalAlpha = value;
+
+            // Force an update.
+            Visible = true;
         }
 
         /// <summary>
@@ -127,6 +156,61 @@ namespace Esmiylara.Controllers.Interface
         }
 
         /// <summary>
+        /// Tells unity if the object is visible.
+        /// </summary>
+        public bool Visible
+        {
+            get
+            {
+                // Get unity's renderer object.
+                var renderer = GetComponent<CanvasRenderer>();
+
+                // Check to see if we got the object.
+                if(renderer != null)
+                {
+                    // we did, return the value.
+                    return (renderer.GetAlpha() > 0);
+                }
+
+                // We did not, return false.
+                return false;
+            }
+            set
+            {
+                // Get unity's renderer object.
+                var renderer = GetComponent<CanvasRenderer>();
+
+                // Check to see if we got the object.
+                if (renderer != null)
+                {
+                    // we did, update the value.
+                    renderer.SetAlpha((value) ? originalAlpha : 0);
+                }
+
+                // Loop through the child objects.
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    // Get the current child.
+                    var child = transform.GetChild(i);
+
+                    // Make sure it is loaded.
+                    if (child != null)
+                    {
+                        // Get the interface controller.
+                        var controller = child.GetComponent<InterfaceController>();
+
+                        // Make sure it is loaded.
+                        if(controller != null)
+                        {
+                            // Set visibility.
+                            controller.Visible = value;
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// The interface object's internal mouse position.
         /// </summary>
         public virtual Vector2 MousePosition
@@ -185,7 +269,7 @@ namespace Esmiylara.Controllers.Interface
             var value = Input.GetMouseButton(button.AsByte());
 
             // Validate the object.
-            if (IsInBounds)
+            if (Visible && Enabled && IsInBounds)
             {
                 // Update the button they are using.
                 switch (button)
