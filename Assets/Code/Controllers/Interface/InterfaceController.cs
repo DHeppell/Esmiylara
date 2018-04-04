@@ -12,21 +12,8 @@ namespace Esmiylara.Controllers.Interface
     /// </summary>
     public class InterfaceController : MonoBehaviour
     {
-        /// <summary>
-        /// Detects if the left mouse button is down.
-        /// </summary>
         [SerializeField]
-        protected bool MouseLeft;
-        /// <summary>
-        /// Detects if the right mouse button is down.
-        /// </summary>
-        [SerializeField]
-        protected bool MouseRight;
-        /// <summary>
-        /// Detects if the middle mouse button is down.
-        /// </summary>
-        [SerializeField]
-        protected bool MouseMiddle;
+        protected bool[] Mouse;
         /// <summary>
         /// Tells unity if the object is enabled.
         /// </summary>
@@ -41,6 +28,10 @@ namespace Esmiylara.Controllers.Interface
         /// </summary>
         void Start()
         {
+            // Initialize the mouse button cache.
+            var btnCount = Enum.GetValues(typeof(EMouseButton)).Length;
+            Mouse = new bool[btnCount];
+
             // Get the renderer.
             var renderer = GetComponent<CanvasRenderer>();
 
@@ -272,18 +263,7 @@ namespace Esmiylara.Controllers.Interface
             if (Visible && Enabled && IsInBounds)
             {
                 // Update the button they are using.
-                switch (button)
-                {
-                    case EMouseButton.Left:
-                        MouseLeft = value;
-                        break;
-                    case EMouseButton.Right:
-                        MouseRight = value;
-                        break;
-                    case EMouseButton.Middle:
-                        MouseMiddle = value;
-                        break;
-                }
+                Mouse[button.AsByte()] = value;
 
                 // Return the value.
                 return value;
@@ -291,21 +271,8 @@ namespace Esmiylara.Controllers.Interface
             else
             {
                 // Update the button they are using.
-                switch (button)
-                {
-                    case EMouseButton.Left:
-                        if (MouseLeft)
-                            MouseLeft = value;
-                        break;
-                    case EMouseButton.Right:
-                        if (MouseRight)
-                            MouseRight = value;
-                        break;
-                    case EMouseButton.Middle:
-                        if (MouseMiddle)
-                            MouseMiddle = value;
-                        break;
-                }
+                if (Mouse[button.AsByte()])
+                    Mouse[button.AsByte()] = value;
             }
 
             // Not validated, return false.
